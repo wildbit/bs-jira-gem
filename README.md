@@ -1,6 +1,6 @@
 # Jira
 
-TODO: Write a gem description
+Internal JIRA client for Beanstalk. Because the current ones sucks!
 
 ## Installation
 
@@ -10,20 +10,25 @@ Add this line to your application's Gemfile:
 
 And then execute:
 
-    $ bundle
+    $ bundle install
 
-Or install it yourself as:
+## Example Usage
 
-    $ gem install jira
+    # Initialize a Jira Client
+    client = Jira::Client.new("https://myjira.net/", "username", "lolsecure")
 
-## Usage
+    # See if it connects
+    if client.connects?
+      puts "Woot. It works :)"
+    end
 
-TODO: Write usage instructions here
+    # Get all Projects
+    projects = client.projects
 
-## Contributing
+    # Post a comment
+    issue_id = "JIRA-123"
+    client.post_comment(issue_id , "It Just Works!")
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+## Run Tests
+
+    $ bundle exec rake test
