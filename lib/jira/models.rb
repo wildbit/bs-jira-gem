@@ -1,9 +1,10 @@
 module Jira
   module Models
-    Project = Struct.new(:id, :name)
-    Issue   = Struct.new(:id, :name)
-    Comment = Struct.new(:id, :author, :body)
-    Status  = Struct.new(:id, :name)
+    Project     = Struct.new(:id, :name)
+    Issue       = Struct.new(:id, :name)
+    Comment     = Struct.new(:id, :author, :body)
+    Status      = Struct.new(:id, :name)
+    Transition  = Struct.new(:id, :name)
 
     def build_project(attrs)
       Project.new(attrs["key"], attrs["name"])
@@ -19,7 +20,11 @@ module Jira
     end
 
     def build_status(attrs)
-      Status.new(attrs["id"], attrs["name"])
+      generic_build(Status, attrs)
+    end
+
+    def generic_build(klass, attrs)
+      klass.new(attrs["id"], attrs["name"])
     end
   end
 end

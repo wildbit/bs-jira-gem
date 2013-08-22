@@ -34,30 +34,34 @@ module Jira
       find_comments(issue_id)
     end
 
+    def current_transitions(issue_id)
+      find_issue_transitions(issue_id)
+    end
+
     # write operations
 
     def post_comment(issue_id, comment_body)
       clear_error
       options = default_options(body: { body: comment_body }.to_json)
 
-      raw_comment = self.class.post(issue_comment_path(issue_id), options)
-
-      if raw_comment["errorMessages"]
-        self.latest_error = raw_comment["errorMessages"]
-      end
+      response = self.class.post(issue_comment_path(issue_id), options)
+      determine_error_status(response)
     end
 
     def update_issue_assignee(issue_id, assignee_name)
       clear_error
       options = default_options(body: { name: assignee_name }.to_json)
-      response = self.class.put(issue_assignee_path(issue_id), options)
 
-      if response["errorMessages"]
-        self.latest_error = response["errorMessages"]
-        false
-      else
-        true
-      end
+      response = self.class.put(issue_assignee_path(issue_id), options)
+      determine_error_status(response)
+    end
+
+    def update_issue_transition(issue_id, transition_id)
+      clear_error
+      options = default_options(body: { transition: { id: transition_id } }.to_json)
+
+      response = self.class.post(issue_transitions_path(issue_id), options)
+      determine_error_status(response)
     end
 
     # error handling
@@ -92,6 +96,16 @@ module Jira
       end
     end
 
+    def find_issue_transitions(issue_id)
+      clear_error
+
+      raw_transitions = find(issue_transitions_path(issue_id), default_options)
+
+      raw_transitions["transitions"].map do |raw_transition|
+        generic_build(Transition, raw_transition)
+      end
+    end
+
     def find(path, options)
       clear_error
       self.class.get(path, options)
@@ -107,6 +121,15 @@ module Jira
 
     def default_headers
       { 'Content-Type' => 'application/json' }
+    end
+
+    def determine_error_status(response)
+      if response["errorMessages"]
+        self.latest_error = response["errorMessages"]
+        false
+      else
+        true
+      end
     end
   end
 end

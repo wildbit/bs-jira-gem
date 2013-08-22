@@ -19,6 +19,10 @@ module Jira
       REST_SUBPATH % "issue/#{issue_id}/assignee"
     end
 
+    def issue_transitions_path(issue_id)
+      REST_SUBPATH % "issue/#{issue_id}/transitions?expand=transitions.fields"
+    end
+
     def statuses_path
       REST_SUBPATH % 'status'
     end

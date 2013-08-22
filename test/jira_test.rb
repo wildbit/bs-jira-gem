@@ -36,4 +36,13 @@ class JiraTest < JiraTestCase
   def test_update_issue_asignee
     assert @client.update_issue_assignee(@issue, "chris")
   end
+
+  def test_issue_transitions
+    assert @client.current_transitions(@issue)
+  end
+
+  def test_update_issue_transition
+    transitions = @client.current_transitions(@issue)
+    assert @client.update_issue_transition(@issue, transitions.first.id), @client.latest_error.to_s
+  end
 end
