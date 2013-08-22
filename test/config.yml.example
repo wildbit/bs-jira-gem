@@ -2,3 +2,4 @@ jira:
   url: yoururl
   username: yourname
   password: yourpassword
+  issue_id: test_issue_key
