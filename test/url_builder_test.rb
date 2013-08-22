@@ -10,7 +10,15 @@ class UrlBuilderTest < JiraTestCase
     assert_equal "/rest/api/2/issue/1", Jira::URLBuilder.issue_path("1")
   end
 
-  def test_comment_path
-    assert_equal "/rest/api/2/issue/1/comment", Jira::URLBuilder.comment_path("1")
+  def test_issue_assignee_path
+    assert_equal "/rest/api/2/issue/1/assignee", Jira::URLBuilder.issue_assignee_path("1")
+  end
+
+  def test_issue_comment_path
+    assert_equal "/rest/api/2/issue/1/comment", Jira::URLBuilder.issue_comment_path("1")
+  end
+
+  def test_statuses_path
+    assert_equal "/rest/api/2/status", Jira::URLBuilder.statuses_path
   end
 end

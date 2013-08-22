@@ -11,8 +11,16 @@ module Jira
       REST_SUBPATH % "issue/#{id}"
     end
 
-    def comment_path(issue_id)
+    def issue_comment_path(issue_id)
       REST_SUBPATH % "issue/#{issue_id}/comment"
+    end
+
+    def issue_assignee_path(issue_id)
+      REST_SUBPATH % "issue/#{issue_id}/assignee"
+    end
+
+    def statuses_path
+      REST_SUBPATH % 'status'
     end
   end
 end
