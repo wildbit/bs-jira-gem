@@ -1,0 +1,4 @@
+jira:
+  url: yoururl
+  username: yourname
+  password: yourpassword
