@@ -1,12 +1,12 @@
-# Jira
+# JIRA
 
-Internal JIRA client for Beanstalk. Because the current ones sucks!
+Yet another lightweight JIRA API Wrapper for Ruby.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'jira'
+    gem 'jira', :github => 'chrisledet/jira'
 
 And then execute:
 
