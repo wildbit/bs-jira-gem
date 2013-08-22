@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.version       = Jira::VERSION
   spec.authors       = ["Chris Ledet"]
   spec.email         = ["chris.ledet@wildbit.com"]
-  spec.description   = "Lightweight JIRA client for Beanstalk"
-  spec.summary       = "Lightweight JIRA client for Beanstalk"
+  spec.description   = "Yet another lightweight JIRA API Wrapper for Ruby"
+  spec.summary       = "Yet another lightweight JIRA API Wrapper for Ruby"
   spec.homepage      = ""
   spec.license       = "MIT"
 
