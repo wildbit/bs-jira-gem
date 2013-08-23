@@ -6,7 +6,9 @@ Yet another lightweight JIRA API Wrapper for Ruby.
 
 Add this line to your application's Gemfile:
 
-    gem 'jira', :github => 'chrisledet/jira'
+```ruby
+gem 'jira', :github => 'chrisledet/jira'
+```
 
 And then execute:
 
@@ -14,20 +16,22 @@ And then execute:
 
 ## Example Usage
 
-    # Initialize a Jira Client
-    client = Jira::Client.new("https://myjira.net/", "username", "lolsecure")
+```ruby
+# Initialize a Jira Client
+client = Jira::Client.new("https://myjira.net/", "username", "lolsecure")
 
-    # See if it connects
-    if client.connects?
-      puts "Woot. It works :)"
-    end
+# See if it connects
+if client.connects?
+  puts "Woot. It works :)"
+end
 
-    # Get all Projects
-    projects = client.projects
+# Get all Projects
+projects = client.projects
 
-    # Post a comment
-    issue_id = "JIRA-123"
-    client.post_comment(issue_id , "It Just Works!")
+# Post a comment
+issue_id = "JIRA-123"
+client.post_comment(issue_id , "It Just Works!")
+```
 
 ## Run Tests
 
