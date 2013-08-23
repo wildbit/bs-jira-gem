@@ -12,7 +12,9 @@ gem 'jira', :github => 'chrisledet/jira'
 
 And then execute:
 
-    $ bundle install
+```shell
+$ bundle install
+```
 
 ## Example Usage
 
@@ -35,4 +37,6 @@ client.post_comment(issue_id , "It Just Works!")
 
 ## Run Tests
 
-    $ bundle exec rake test
+```shell
+$ bundle exec rake test
+```
