@@ -45,4 +45,12 @@ class JiraTest < JiraTestCase
     transitions = @client.current_transitions(@issue)
     assert @client.update_issue_transition(@issue, transitions.first.id), @client.latest_error.to_s
   end
+
+  def test_add_label_to_issue
+    labels = @client.issue_labels( @issue )
+    @client.add_label_to_issue(@issue, "label_#{rand(0..10_000_000)}")
+    new_labels = @client.issue_labels( @issue )
+
+    assert_equal (labels.size + 1), new_labels.size
+  end
 end

@@ -38,6 +38,10 @@ module Jira
       find_issue_transitions(issue_id)
     end
 
+    def issue_labels(issue_id)
+      find_labels(issue_id)
+    end
+
     # write operations
 
     def post_comment(issue_id, comment_body)
@@ -61,6 +65,12 @@ module Jira
       options = default_options(body: { transition: { id: transition_id } }.to_json)
 
       response = self.class.post(issue_transitions_path(issue_id), options)
+      determine_error_status(response)
+    end
+
+    def add_label_to_issue(issue_id, label)
+      options = default_options(body: { update: { labels: [ { add: label } ] } }.to_json)
+      response = self.class.put(issue_path(issue_id), options)
       determine_error_status(response)
     end
 
@@ -103,6 +113,16 @@ module Jira
 
       raw_transitions["transitions"].map do |raw_transition|
         generic_build(Transition, raw_transition)
+      end
+    end
+
+    def find_labels(issue_id)
+      raw_issues = find(issue_path(issue_id), default_options)
+
+      if raw_issues && raw_issues['fields']
+        raw_issues['fields']['labels']
+      else
+        []
       end
     end
 
