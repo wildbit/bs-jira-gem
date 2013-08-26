@@ -32,7 +32,10 @@ projects = client.projects
 
 # Post a comment
 issue_id = "JIRA-123"
-client.post_comment(issue_id , "It Just Works!")
+client.add_comment_to_issue(issue_id , "It Just Works!")
+
+# Add a label
+client.add_label_to_issue(issue_id , "beta")
 ```
 
 ## Run Tests
