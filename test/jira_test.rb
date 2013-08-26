@@ -16,7 +16,7 @@ class JiraTest < JiraTestCase
   end
 
   def test_comments
-    assert @client.comments(@issue)
+    assert @client.issue_comments(@issue)
     refute @client.error_occurred?
   end
 
@@ -26,9 +26,9 @@ class JiraTest < JiraTestCase
   end
 
   def test_post_comment
-    old_comments = @client.comments(@issue)
-    @client.post_comment(@issue, "Posting a new comment")
-    new_comments = @client.comments(@issue)
+    old_comments = @client.issue_comments(@issue)
+    @client.add_comment_to_issue(@issue, "Posting a new comment")
+    new_comments = @client.issue_comments(@issue)
 
     assert_equal(new_comments.size, old_comments.size + 1)
   end
@@ -38,11 +38,11 @@ class JiraTest < JiraTestCase
   end
 
   def test_issue_transitions
-    assert @client.current_transitions(@issue)
+    assert @client.issue_transitions(@issue)
   end
 
   def test_update_issue_transition
-    transitions = @client.current_transitions(@issue)
+    transitions = @client.issue_transitions(@issue)
     assert @client.update_issue_transition(@issue, transitions.first.id), @client.latest_error.to_s
   end
 

@@ -30,11 +30,11 @@ module Jira
       @statuses ||= find_statuses
     end
 
-    def comments(issue_id)
+    def issue_comments(issue_id)
       find_comments(issue_id)
     end
 
-    def current_transitions(issue_id)
+    def issue_transitions(issue_id)
       find_issue_transitions(issue_id)
     end
 
@@ -44,7 +44,7 @@ module Jira
 
     # write operations
 
-    def post_comment(issue_id, comment_body)
+    def add_comment_to_issue(issue_id, comment_body)
       clear_error
       options = default_options(body: { body: comment_body }.to_json)
 
