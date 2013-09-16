@@ -5,6 +5,7 @@ module Jira
     Comment     = Struct.new(:id, :author, :body)
     Status      = Struct.new(:id, :name)
     Transition  = Struct.new(:id, :name)
+    User        = Struct.new(:name, :email)
 
     def build_project(attrs)
       Project.new(attrs["key"], attrs["name"])
@@ -21,6 +22,10 @@ module Jira
 
     def build_status(attrs)
       generic_build(Status, attrs)
+    end
+
+    def build_user(attrs)
+      User.new(attrs['name'], attrs['emailAddress'])
     end
 
     def generic_build(klass, attrs)

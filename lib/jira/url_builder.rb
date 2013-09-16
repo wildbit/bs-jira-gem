@@ -23,6 +23,10 @@ module Jira
       REST_SUBPATH % "issue/#{issue_id}/transitions?expand=transitions.fields"
     end
 
+    def assignable_user_for_issue_path(issue_id)
+      REST_SUBPATH % "user/assignable/search?issueKey=#{issue_id}"
+    end
+
     def statuses_path
       REST_SUBPATH % 'status'
     end

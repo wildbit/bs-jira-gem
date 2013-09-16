@@ -8,6 +8,9 @@ class JiraTest < JiraTestCase
 
   def test_connection
     assert @client.connects?
+
+    client = Jira::Client.new(config["url"], config["username"], '')
+    refute client.connects?
   end
 
   def test_projects
@@ -34,7 +37,7 @@ class JiraTest < JiraTestCase
   end
 
   def test_update_issue_asignee
-    assert @client.update_issue_assignee(@issue, "chris")
+    assert @client.update_issue_assignee(@issue, "admin")
   end
 
   def test_issue_transitions
@@ -48,9 +51,21 @@ class JiraTest < JiraTestCase
 
   def test_add_label_to_issue
     labels = @client.issue_labels( @issue )
+    assert labels, "Error: #{@client.latest_error}"
+
     @client.add_label_to_issue(@issue, "label_#{rand(0..10_000_000)}")
     new_labels = @client.issue_labels( @issue )
 
-    assert_equal (labels.size + 1), new_labels.size
+    assert_equal (labels.size + 1), new_labels.size, "Error: #{@client.latest_error}"
+  end
+
+  def test_assignable_users
+    users = @client.assignable_users_for_issue(@issue)
+    assert users
+
+    assert_raise Jira::Client::NotFound do
+      @client.assignable_users_for_issue("BS-LOLOL")
+      assert @client.error_occurred?
+    end
   end
 end

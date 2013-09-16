@@ -11,6 +11,10 @@ module Jira
 
     attr_accessor :latest_error
 
+    class JiraError < Exception; end
+    class UnauthorizedError < JiraError; end
+    class NotFound < JiraError; end
+
     def initialize(url, username, password)
       self.class.base_uri(url)
       self.class.headers(default_headers)
@@ -20,6 +24,8 @@ module Jira
 
     def connects?
       !projects.nil?
+    rescue UnauthorizedError
+      false
     end
 
     def projects
@@ -40,6 +46,10 @@ module Jira
 
     def issue_labels(issue_id)
       find_labels(issue_id)
+    end
+
+    def assignable_users_for_issue(issue_id)
+      find_users_for_issue(issue_id)
     end
 
     # write operations
@@ -69,7 +79,7 @@ module Jira
     end
 
     def add_label_to_issue(issue_id, label)
-      options = default_options(body: { update: { labels: [ { add: label } ] } }.to_json)
+      options = default_options(body: { update: { label: [ { add: label } ] } }.to_json)
       response = self.class.put(issue_path(issue_id), options)
       determine_error_status(response)
     end
@@ -126,9 +136,25 @@ module Jira
       end
     end
 
+    def find_users_for_issue(issue_id)
+      raw_users = find(assignable_user_for_issue_path(issue_id), default_options)
+
+      raw_users.map do |raw_user|
+        build_user(raw_user)
+      end
+    end
+
     def find(path, options)
       clear_error
-      self.class.get(path, options)
+      response = self.class.get(path, options)
+
+      if response && response.code == 401
+        raise UnauthorizedError.new("Unauthorized")
+      elsif response && response.code == 404
+        raise NotFound.new("URL Not Found")
+      end
+
+      response
     end
 
     def clear_error
@@ -145,10 +171,20 @@ module Jira
 
     def determine_error_status(response)
       if response["errorMessages"]
-        self.latest_error = response["errorMessages"]
+        self.latest_error = extract_error_message(response)
         false
       else
         true
+      end
+    end
+
+    def extract_error_message(response)
+      return unless response["errorMessages"] || response["errors"]
+
+      if response["errorMessages"] && response["errorMessages"].size > 0
+        response["errorMessages"].to_s
+      elsif response["errors"]
+        response["errors"].to_s
       end
     end
   end
