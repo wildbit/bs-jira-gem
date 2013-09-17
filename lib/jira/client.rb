@@ -79,7 +79,7 @@ module Jira
     end
 
     def add_label_to_issue(issue_id, label)
-      options = default_options(body: { update: { label: [ { add: label } ] } }.to_json)
+      options = default_options(body: { update: { labels: [ { add: label } ] } }.to_json)
       response = self.class.put(issue_path(issue_id), options)
       determine_error_status(response)
     end
