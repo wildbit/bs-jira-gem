@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'jira/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "jira"
+  spec.name          = "jira-wb"
   spec.version       = Jira::VERSION
   spec.authors       = ["Chris Ledet"]
   spec.email         = ["chris.ledet@wildbit.com"]
