@@ -11,7 +11,7 @@ module Jira
 
     attr_accessor :latest_error
 
-    class JiraError < Exception; end
+    class JiraError < StandardError; end
     class UnauthorizedError < JiraError; end
     class NotFound < JiraError; end
 
